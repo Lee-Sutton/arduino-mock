@@ -38,6 +38,12 @@ TEST_CASE( "Analog read write tests", "[Analog]" ) {
     Verify(Method(mock_analog, analogWrite).Using(10, 20)).Once();
 }
 
+TEST_CASE("millis tests", "[millis]") {
+    When(Method(mock_millis, millis)).Return(100);
+    REQUIRE(millis() == 100);
+    Verify(Method(mock_millis, millis)).Once();
+}
+
 SCENARIO ("Mock Serial can be used in the arduino sketch") {
     GIVEN("An arduino sketch which includes Arduino.h") {
         WHEN("The mock tests are run") {
