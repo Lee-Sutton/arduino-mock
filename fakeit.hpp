@@ -31,6 +31,7 @@
 #include <iosfwd>
 #include <atomic>
 #include <tuple>
+#include "catch.hpp"
 
 
 namespace fakeit {
