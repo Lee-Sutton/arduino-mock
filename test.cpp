@@ -10,21 +10,36 @@
 using namespace fakeit;
 
 TEST_CASE( "Serial class tests", "[Serial]" ) {
-    When(Method(mock_serial, begin)).Return();
-    Serial.begin(9600);
-    Verify(Method(mock_serial, begin).Using(9600)).Once();
-    When(OverloadedMethod(mock_serial, print, void(std::string))).AlwaysReturn();
-    When(OverloadedMethod(mock_serial, print, void(double, int))).AlwaysReturn();
-    When(OverloadedMethod(mock_serial, println, void(std::string))).AlwaysReturn();
-    When(OverloadedMethod(mock_serial, println, void(double, int))).AlwaysReturn();
-    Serial.print("testing print");
-    Serial.print(1.0, 6);
-    Serial.println("testing println");
-    Serial.println(2.0, 5);
-    Verify(OverloadedMethod(mock_serial, print, void(std::string)).Using("testing print")).Once();
-    Verify(OverloadedMethod(mock_serial, print, void(double, int)).Using(1.0, 6)).Once();
-    Verify(OverloadedMethod(mock_serial, println, void(std::string)).Using("testing println")).Once();
-    Verify(OverloadedMethod(mock_serial, println, void(double, int)).Using(2.0, 5)).Once();
+    SECTION( "Serial Begin" ) {
+        When(Method(mock_serial, begin)).Return();
+        Serial.begin(9600);
+        Verify(Method(mock_serial, begin).Using(9600)).Once();
+    }
+    SECTION( "Serial Print methods" ) {
+        When(OverloadedMethod(mock_serial, print, void(std::string))).AlwaysReturn();
+        When(OverloadedMethod(mock_serial, print, void(double))).AlwaysReturn();
+        When(OverloadedMethod(mock_serial, print, void(double, int))).AlwaysReturn();
+        Serial.print("testing print");
+        Serial.print(1.0, 6);
+        Serial.print(1.0);
+        Verify(OverloadedMethod(mock_serial, print, void(std::string)).Using("testing print")).Once();
+        Verify(OverloadedMethod(mock_serial, print, void(double)).Using(1.0)).Once();
+        Verify(OverloadedMethod(mock_serial, print, void(double, int)).Using(1.0, 6)).Once();
+    }
+    SECTION( "Serial Println methods" ) {
+        When(OverloadedMethod(mock_serial, println, void())).AlwaysReturn();
+        When(OverloadedMethod(mock_serial, println, void(std::string))).AlwaysReturn();
+        When(OverloadedMethod(mock_serial, println, void(double))).AlwaysReturn();
+        When(OverloadedMethod(mock_serial, println, void(double, int))).AlwaysReturn();
+        Serial.println();
+        Serial.println("testing println");
+        Serial.println(2.0, 5);
+        Serial.println(2.0);
+        Verify(OverloadedMethod(mock_serial, println, void())).Once();
+        Verify(OverloadedMethod(mock_serial, println, void(std::string)).Using("testing println")).Once();
+        Verify(OverloadedMethod(mock_serial, println, void(double)).Using(2.0)).Once();
+        Verify(OverloadedMethod(mock_serial, println, void(double, int)).Using(2.0, 5)).Once();
+    }
 
 }
 
