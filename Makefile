@@ -1,8 +1,8 @@
 test: mock_tests
-	./mock_tests
+	./bin/mock_tests
 
-mock_tests: test.cpp Arduino.h Arduino.cpp catch.hpp fakeit.hpp main.ino
-	g++ -std=c++11 test.cpp Arduino.cpp -o mock_tests -I .
+mock_tests: src/*.cpp include/*.h test/*.cpp test/*.ino
+	g++ -std=c++11 test/test.cpp src/Arduino.cpp -o bin/mock_tests -I ./include/
 
 clean:
-	rm mock_tests
+	rm bin/mock_tests
